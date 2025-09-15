@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>OnlineShop</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome สำหรับ icon -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-red-50 min-h-screen flex flex-col">
 
@@ -11,10 +14,19 @@
   <header class="bg-red-600 text-white shadow">
     <div class="container mx-auto flex items-center justify-between px-6 py-3">
       <a href="{% url 'home' %}" class="text-xl font-bold">OnlineShop</a>
-      <nav class="space-x-6">
+      <nav class="flex items-center space-x-6">
         <a class="hover:text-gray-200" href="{% url 'home' %}">หน้าแรก</a>
-        <a class="hover:text-gray-200" href="{% url 'categories' %}">หมวดหมู่</a>
-        <a class="hover:text-gray-200" href="{% url 'cart' %}">ตะกร้า</a>
+        <a class="hover:text-gray-200" href="{% url 'products:categories' %}">หมวดหมู่</a>
+
+        <!-- ตะกร้าเป็น icon ขวาบน -->
+        <a href="{% url 'products:cart_detail' %}" class="relative">
+          <i class="fas fa-shopping-cart text-xl"></i>
+          {% if total_qty and total_qty > 0 %}
+            <span class="absolute -top-2 -right-3 bg-white text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
+              {{ total_qty }}
+            </span>
+          {% endif %}
+        </a>
 
         {% if request.user.is_authenticated %}
           <a class="hover:text-gray-200" href="{% url 'profile' %}">โปรไฟล์</a>

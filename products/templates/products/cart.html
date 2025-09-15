@@ -1,5 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="text-3xl font-bold text-red-700 mb-4">ตะกร้าสินค้า</h1>
-<p class="text-gray-700">ยังไม่มีสินค้าในตะกร้า</p>
+<h1 class="text-2xl font-bold mb-4">ตะกร้าสินค้า</h1>
+
+{% if items %}
+  <table class="w-full border">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="p-2">สินค้า</th>
+        <th class="p-2">ราคา</th>
+        <th class="p-2">จำนวน</th>
+        <th class="p-2">รวม</th>
+        <th class="p-2"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr class="border-t">
+        <td class="p-2">{{ item.name }}</td>
+        <td class="p-2">{{ item.price }}</td>
+        <td class="p-2">{{ item.qty }}</td>
+        <td class="p-2">{{ item.subtotal }}</td>
+        <td class="p-2">
+          <form method="post" action="{% url 'products:cart_remove' item.pid %}">
+            {% csrf_token %}
+            <button class="text-red-600">ลบ</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="mt-4 text-right font-bold">
+    รวมทั้งหมด: {{ total_price }} บาท ({{ total_qty }} ชิ้น)
+  </div>
+{% else %}
+  <p>ตะกร้ายังว่างอยู่</p>
+{% endif %}
 {% endblock %}

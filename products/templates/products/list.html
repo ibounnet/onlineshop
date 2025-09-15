@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">สินค้า</h1>
+
+  {% if messages %}
+    {% for m in messages %}
+      <div class="mb-3 px-4 py-2 rounded border
+        {% if m.tags == 'success' %} bg-green-100 border-green-300 text-green-700
+        {% elif m.tags == 'error' %} bg-red-100 border-red-300 text-red-700
+        {% else %} bg-gray-100 border-gray-300 text-gray-800 {% endif %}">
+        {{ m }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for p in products %}
+    <div class="border rounded-xl bg-white shadow hover:shadow-md overflow-hidden">
+      <div class="aspect-square bg-gray-100 flex items-center justify-center">
+        {% if p.image %}
+          <img src="{{ p.image.url }}" alt="{{ p.name }}" class="w-full h-full object-cover">
+        {% else %}
+          <span class="text-gray-400">ไม่มีรูป</span>
+        {% endif %}
+      </div>
+      <div class="p-4">
+        <h3 class="font-semibold text-lg truncate">{{ p.name }}</h3>
+        <p class="text-red-600 font-bold mt-1">฿{{ p.price }}</p>
+        
+        <form method="post" action="{% url 'products:cart_add' p.id %}" class="mt-3">
+          {% csrf_token %}
+          <button type="submit"
+            class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+            เพิ่มลงตะกร้า
+          </button>
+        </form>
+      </div>
+    </div>
+    {% empty %}
+      <p class="col-span-full text-center text-gray-500">ยังไม่มีสินค้า</p>
+    {% endfor %}
+  </div>
+
+  <div class="mt-6 text-right">
+    <a href="{% url 'products:cart_detail' %}" class="underline text-red-600">ดูตะกร้าสินค้า</a>
+  </div>
+</div>
+{% endblock %}
