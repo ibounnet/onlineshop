@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'tailwind',
     'products',
     "orders",
+    "cart",
 
 
 ]

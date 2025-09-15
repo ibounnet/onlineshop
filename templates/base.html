@@ -14,31 +14,48 @@
   <header class="bg-red-600 text-white shadow">
     <div class="container mx-auto flex items-center justify-between px-6 py-3">
       <a href="{% url 'home' %}" class="text-xl font-bold">OnlineShop</a>
+
       <nav class="flex items-center space-x-6">
-        <a class="hover:text-gray-200" href="{% url 'home' %}">หน้าแรก</a>
-        <a class="hover:text-gray-200" href="{% url 'products:categories' %}">หมวดหมู่</a>
-
-        <!-- ตะกร้าเป็น icon ขวาบน -->
-        <a href="{% url 'products:cart_detail' %}" class="relative">
-          <i class="fas fa-shopping-cart text-xl"></i>
-          {% if total_qty and total_qty > 0 %}
-            <span class="absolute -top-2 -right-3 bg-white text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
-              {{ total_qty }}
-            </span>
-          {% endif %}
-        </a>
-
         {% if request.user.is_authenticated %}
-          <a class="hover:text-gray-200" href="{% url 'profile' %}">โปรไฟล์</a>
-
+          
           {% if request.user.is_staff %}
-            <a class="hover:text-gray-200 font-semibold" href="{% url 'admin_product_list' %}">
-              แอดมิน
-            </a>
+            <!-- เมนูสำหรับแอดมิน -->
+            <a class="hover:text-gray-200" href="{% url 'products:admin_product_list' %}">จัดการสินค้า</a>
+            <a class="hover:text-gray-200" href="{% url 'logout' %}">ออกระบบ</a>
+          
+          {% else %}
+            <!-- เมนูสำหรับผู้ใช้งานทั่วไป -->
+            <a class="hover:text-gray-200" href="{% url 'home' %}">หน้าแรก</a>
+            <a class="hover:text-gray-200" href="{% url 'products:categories' %}">หมวดหมู่</a>
+
+            <!-- ตะกร้า -->
+            <a href="{% url 'cart:cart_detail' %}" class="relative">
+  <i class="fas fa-shopping-cart text-xl"></i>
+  {% if total_qty and total_qty > 0 %}
+    <span class="absolute -top-2 -right-3 bg-white text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
+      {{ total_qty }}
+    </span>
+  {% endif %}
+</a>
+
+
+            <!-- โปรไฟล์ -->
+            <a href="{% url 'profile' %}" class="relative flex items-center">
+  {% if request.user.profile.image %}
+    <img src="{{ request.user.profile.image.url }}" 
+         alt="Profile" 
+         class="w-8 h-8 rounded-full border-2 border-white object-cover">
+  {% else %}
+    <!-- fallback ถ้าไม่มีรูป -->
+    <i class="fas fa-user-circle text-2xl"></i>
+  {% endif %}
+</a>
+
+            <a class="hover:text-gray-200" href="{% url 'logout' %}">ออกจากระบบ</a>
           {% endif %}
 
-          <a class="hover:text-gray-200" href="{% url 'logout' %}">ออกระบบ</a>
         {% else %}
+          <!-- เมนูสำหรับผู้ที่ยังไม่ได้ล็อกอิน -->
           <a class="hover:text-gray-200" href="{% url 'login' %}">เข้าสู่ระบบ</a>
           <a class="hover:text-gray-200" href="{% url 'register' %}">สมัครสมาชิก</a>
         {% endif %}

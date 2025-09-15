@@ -17,7 +17,8 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(next_page="home"), name="logout"),
 
     path("accounts/", include("accounts.urls")),
-    path("cart/", product_views.cart_detail, name="cart_detail"),
+    path("cart/", include("cart.urls", namespace="cart")),
+    path("products/", include("products.urls", namespace="products")),
     path("cart/add/<int:product_id>/", product_views.cart_add, name="cart_add"),
     path("cart/update/<int:product_id>/", product_views.cart_update, name="cart_update"),
     path("cart/remove/<int:product_id>/", product_views.cart_remove, name="cart_remove"),

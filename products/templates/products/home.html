@@ -1,44 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="text-3xl font-bold text-red-700 mb-6">สินค้าแนะนำ</h1>
+<h2 class="text-xl font-bold mb-4">สินค้า</h2>
 
-{% if products %}
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    {% for p in products %}
-      <div class="bg-white border border-red-200 rounded-xl shadow hover:shadow-md transition p-3">
-        {% if p.image %}
-          <img src="{{ p.image.url }}" alt="{{ p.name }}" class="w-full h-40 object-cover rounded-lg mb-3">
-        {% else %}
-          <img src="https://picsum.photos/seed/{{ p.id }}/400/300" alt="placeholder" class="w-full h-40 object-cover rounded-lg mb-3">
-        {% endif %}
-
-        <h3 class="font-semibold text-gray-900 line-clamp-2">{{ p.name }}</h3>
-        <p class="text-red-600 font-bold">฿{{ p.price }}</p>
-        <p class="text-xs text-gray-500">ส่งเร็ว • รีวิวดี</p>
-
-        <div class="mt-3 grid grid-cols-2 gap-2">
-          <a href="#" class="text-center bg-white border border-red-500 text-red-600 text-sm py-2 rounded hover:bg-red-50">รายละเอียด</a>
-          <button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 rounded">ใส่ตะกร้า</button>
-        </div>
-      </div>
-    {% endfor %}
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  {% for product in products %}
+  <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover rounded">
+    <h3 class="mt-3 font-semibold truncate">{{ product.name }}</h3>
+    <p class="text-red-600 font-bold">฿{{ product.price }}</p>
+    <form method="post" action="{% url 'products:cart_add' product.id %}" class="mt-auto">
+      {% csrf_token %}
+      <input type="hidden" name="name" value="{{ product.name }}">
+      <input type="hidden" name="price" value="{{ product.price }}">
+      <button type="submit" class="mt-2 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded">
+        เพิ่มลงตะกร้า
+      </button>
+    </form>
   </div>
-{% else %}
-  <!-- ยังไม่มีสินค้าใน DB: แสดงตัวอย่าง 2 ชิ้น -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="bg-white border border-red-200 rounded-xl shadow p-3">
-      <img src="https://picsum.photos/seed/demo1/400/300" class="w-full h-40 object-cover rounded-lg mb-3" alt="demo">
-      <h3 class="font-semibold">เสื้อยืดสีแดงพรีเมียม</h3>
-      <p class="text-red-600 font-bold">฿199.00</p>
-      <button class="mt-3 w-full bg-red-600 hover:bg-red-700 text-white text-sm py-2 rounded">ใส่ตะกร้า</button>
-    </div>
-    <div class="bg-white border border-red-200 rounded-xl shadow p-3">
-      <img src="https://picsum.photos/seed/demo2/400/300" class="w-full h-40 object-cover rounded-lg mb-3" alt="demo">
-      <h3 class="font-semibold">รองเท้าผ้าใบมินิมอล</h3>
-      <p class="text-red-600 font-bold">฿799.00</p>
-      <button class="mt-3 w-full bg-red-600 hover:bg-red-700 text-white text-sm py-2 rounded">ใส่ตะกร้า</button>
-    </div>
-  </div>
-  <p class="text-gray-600 mt-6">ยังไม่มีสินค้าในฐานข้อมูล ระบบแสดงตัวอย่างให้ก่อน</p>
-{% endif %}
+  {% endfor %}
+</div>
+
 {% endblock %}

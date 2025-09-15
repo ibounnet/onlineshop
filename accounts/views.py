@@ -41,9 +41,12 @@ def user_login(request):
         if user is not None:
             login(request, user)
             nxt = request.GET.get("next") or request.POST.get("next")
-            return redirect(nxt) if nxt else redirect(reverse("home"))
+            return redirect(nxt) if nxt else redirect("home")  # ✅ redirect เลย
 
-        messages.error(request, "ชื่อผู้ใช้/อีเมล หรือรหัสผ่านไม่ถูกต้อง")
+        else:
+            messages.error(request, "ชื่อผู้ใช้/อีเมล หรือรหัสผ่านไม่ถูกต้อง")
+            return render(request, "accounts/login.html")       # ✅ render เฉพาะตอน fail
+
     return render(request, "accounts/login.html")
 
 

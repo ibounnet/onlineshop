@@ -36,25 +36,31 @@ def _totals(session):
 
 @login_required
 def cart_detail(request):
-    """ดูรายละเอียดตะกร้า"""
-    cart = _get_cart(request.session)
+    cart = request.session.get("cart", {})
     items = []
+    total_qty = 0
+    total_price = 0
+
     for pid, data in cart.items():
         price = float(data["price"])
         qty = int(data["qty"])
+        subtotal = price * qty
+        total_qty += qty
+        total_price += subtotal
         items.append({
             "pid": pid,
             "name": data["name"],
             "price": price,
             "qty": qty,
-            "subtotal": price * qty
+            "subtotal": subtotal,
         })
-    total_qty, total_price = _totals(request.session)
-    return render(request, "products/cart.html", {
+
+    return render(request, "cart/cart.html", {
         "items": items,
         "total_qty": total_qty,
-        "total_price": total_price
+        "total_price": total_price,
     })
+
 
 @login_required
 def cart_add(request, product_id):
@@ -119,7 +125,6 @@ def admin_product_create(request):
             p = form.save()
             messages.success(request, f"เพิ่มสินค้า “{p.name}” แล้ว")
             return redirect("products:admin_product_list")
-        messages.error(request, "กรุณาตรวจสอบข้อมูลที่กรอก")
     else:
         form = ProductForm()
     return render(request, "products/admin/form.html", {"form": form, "mode": "create"})
@@ -130,10 +135,9 @@ def admin_product_edit(request, pk):
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=p)
         if form.is_valid():
-            p = form.save()
+            form.save()
             messages.success(request, f"บันทึกสินค้า “{p.name}” แล้ว")
             return redirect("products:admin_product_list")
-        messages.error(request, "กรุณาตรวจสอบข้อมูลที่กรอก")
     else:
         form = ProductForm(instance=p)
     return render(request, "products/admin/form.html", {"form": form, "mode": "edit", "product": p})
