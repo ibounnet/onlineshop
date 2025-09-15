@@ -32,11 +32,10 @@
             <a href="{% url 'cart:cart_detail' %}" class="relative">
   <i class="fas fa-shopping-cart text-xl"></i>
   {% if total_qty and total_qty > 0 %}
-    <span class="absolute -top-2 -right-3 bg-white text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
-      {{ total_qty }}
-    </span>
+    <span class="absolute -top-2 -right-3 bg-white text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full">{{ total_qty }}</span>
   {% endif %}
 </a>
+
 
 
             <!-- โปรไฟล์ -->

@@ -18,7 +18,7 @@ urlpatterns = [
 
     path("accounts/", include("accounts.urls")),
     path("cart/", include("cart.urls", namespace="cart")),
-    path("products/", include("products.urls", namespace="products")),
+    path("", include(("products.urls", "products"), namespace="products")),
     path("cart/add/<int:product_id>/", product_views.cart_add, name="cart_add"),
     path("cart/update/<int:product_id>/", product_views.cart_update, name="cart_update"),
     path("cart/remove/<int:product_id>/", product_views.cart_remove, name="cart_remove"),
