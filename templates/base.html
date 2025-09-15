@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>OnlineShop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-red-50 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="bg-red-600 text-white shadow">
+    <div class="container mx-auto flex items-center justify-between px-6 py-3">
+      <a href="{% url 'home' %}" class="text-xl font-bold">OnlineShop</a>
+      <nav class="space-x-6">
+        <a class="hover:text-gray-200" href="{% url 'home' %}">หน้าแรก</a>
+        <a class="hover:text-gray-200" href="{% url 'categories' %}">หมวดหมู่</a>
+        <a class="hover:text-gray-200" href="{% url 'cart' %}">ตะกร้า</a>
+
+        {% if request.user.is_authenticated %}
+          <a class="hover:text-gray-200" href="{% url 'profile' %}">โปรไฟล์</a>
+
+          {% if request.user.is_staff %}
+            <a class="hover:text-gray-200 font-semibold" href="{% url 'admin_product_list' %}">
+              แอดมิน
+            </a>
+          {% endif %}
+
+          <a class="hover:text-gray-200" href="{% url 'logout' %}">ออกระบบ</a>
+        {% else %}
+          <a class="hover:text-gray-200" href="{% url 'login' %}">เข้าสู่ระบบ</a>
+          <a class="hover:text-gray-200" href="{% url 'register' %}">สมัครสมาชิก</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container mx-auto flex-1 px-6 py-8">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-red-600 text-white text-center py-4">
+    © 2025 OnlineShop
+  </footer>
+</body>
+</html>

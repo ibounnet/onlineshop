@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-3xl font-bold text-red-700 mb-6">{% if mode == 'edit' %}แก้ไขสินค้า{% else %}เพิ่มสินค้า{% endif %}</h1>
+<form method="post" enctype="multipart/form-data" class="bg-white border border-red-200 rounded-xl shadow p-6 max-w-3xl">
+  {% csrf_token %}
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div><label class="block mb-2">ชื่อสินค้า</label>{{ form.name }}</div>
+    <div><label class="block mb-2">ราคา</label>{{ form.price }}</div>
+    <div><label class="block mb-2">สต็อก</label>{{ form.stock }}</div>
+    <div><label class="block mb-2">สถานะ</label>{{ form.is_active }}</div>
+    <div class="md:col-span-2"><label class="block mb-2">รายละเอียด</label>{{ form.description }}</div>
+    <div class="md:col-span-2"><label class="block mb-2">รูปภาพ</label>{{ form.image }}
+      {% if product and product.image %}<img src="{{ product.image.url }}" class="mt-3 h-36 rounded object-cover border">{% endif %}
+    </div>
+  </div>
+  <div class="mt-6 flex gap-3">
+    <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">{% if mode == 'edit' %}บันทึก{% else %}เพิ่มสินค้า{% endif %}</button>
+    <a href="{% url 'admin_product_list' %}" class="px-4 py-2 rounded border border-red-500 text-red-600 hover:bg-red-50">ยกเลิก</a>
+  </div>
+</form>
+{% endblock %}

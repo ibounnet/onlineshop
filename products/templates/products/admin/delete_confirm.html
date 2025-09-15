@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-3xl font-bold text-red-700 mb-6">ลบสินค้า</h1>
+<div class="bg-white border border-red-200 rounded-xl shadow p-6 max-w-xl">
+  <p>ต้องการลบ <span class="font-semibold">{{ product.name }}</span> ใช่หรือไม่?</p>
+  <form method="post" class="mt-6 flex gap-3">
+    {% csrf_token %}
+    <button class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded">ยืนยันลบ</button>
+    <a href="{% url 'admin_product_list' %}" class="px-4 py-2 rounded border border-red-500 text-red-600 hover:bg-red-50">ยกเลิก</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<!-- accounts/templates/accounts/profile.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-[60vh] flex items-center justify-center">
+  <div class="bg-white border border-red-300 rounded p-8 shadow w-full max-w-lg">
+    <div class="flex items-center gap-4 mb-6">
+      {% if request.user.profile.image %}
+        <img src="{{ request.user.profile.image.url }}" alt="avatar"
+             class="w-20 h-20 rounded-full object-cover border border-red-300">
+      {% else %}
+        <div class="w-20 h-20 rounded-full border border-red-300 bg-red-100 flex items-center justify-center text-red-700 font-semibold">
+          {{ request.user.username|first|upper }}
+        </div>
+      {% endif %}
+      <div>
+        <h1 class="text-2xl font-bold text-red-700">{{ request.user.username }}</h1>
+        <p class="text-gray-700">{{ request.user.email }}</p>
+      </div>
+    </div>
+    <div class="space-y-2 mb-4">
+      {% if request.user.profile.full_name %}<p><span class="font-semibold">ชื่อ-นามสกุล:</span> {{ request.user.profile.full_name }}</p>{% endif %}
+      {% if request.user.profile.phone %}<p><span class="font-semibold">โทร:</span> {{ request.user.profile.phone }}</p>{% endif %}
+      {% if request.user.profile.address %}<p><span class="font-semibold">ที่อยู่:</span> {{ request.user.profile.address }}</p>{% endif %}
+    </div>
+    <div class="flex gap-3">
+      <a href="{% url 'profile_edit' %}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">แก้ไขโปรไฟล์</a>
+      <a href="{% url 'profile_delete_confirm' %}" class="bg-white border border-red-500 text-red-600 px-4 py-2 rounded hover:bg-red-50">ลบบัญชี</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
